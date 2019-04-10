@@ -57,7 +57,7 @@ module JavaBuildpack
         
         @droplet.java_opts.add_preformatted_options("-Xverify:none")   
 
-        @droplet..java_opts.add_javaagent('/home/vcap/app/.java-buildpack/cx-iast-agent/cx-launcher.jar')     
+        @droplet.java_opts.add_javaagent('/home/vcap/app/.java-buildpack/cx-iast-agent/cx-launcher.jar')     
 
       end
     end
