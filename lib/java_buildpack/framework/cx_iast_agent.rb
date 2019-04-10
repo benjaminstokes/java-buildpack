@@ -35,7 +35,9 @@ module JavaBuildpack
       end
 
       def detect
-        
+        @logger.debug("CxIast detect running")
+        @droplet
+
       end
 
       def compile 
