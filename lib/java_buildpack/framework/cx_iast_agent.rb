@@ -34,6 +34,9 @@ module JavaBuildpack
         @logger = JavaBuildpack::Logging::LoggerFactory.instance.get_logger CxIastAgent
       end
 
+      def detect
+        
+      end
 
       def compile 
         @logger.debug("Downloading CxIAST Agent")
