@@ -49,7 +49,7 @@ module JavaBuildpack
 
       def release
         @logger.debug("CxIast release running - Configuring CxIAST Agent")
-        @droplet.java_opts.add_system_property('cxAppTag', application_name)
+        @droplet.java_opts.add_system_property('cxAppTag', @application.details['application_name'])
         #@droplet.java_opts.add_system_property('cxScanTag', application_name)
         @droplet.java_opts.add_system_property('cxTeam', 'CxServer')
 
