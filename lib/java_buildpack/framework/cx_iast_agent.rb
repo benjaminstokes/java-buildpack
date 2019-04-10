@@ -53,10 +53,11 @@ module JavaBuildpack
         #@droplet.java_opts.add_system_property('cxScanTag', application_name)
         @droplet.java_opts.add_system_property('cxTeam', 'CxServer')
 
-        @droplet.java_opts.add_system_property('iast.home', 'uknown')
+        @droplet.java_opts.add_system_property('iast.home', '/home/vcap/app/.java-buildpack/cx-iast-agent')
+        
+        @droplet.java_opts.add_preformatted_options("-Xverify:none")   
 
-
-        @droplet.java_opts.add_preformatted_options("-Xverify:none")        
+        @droplet.add_javaagent('/home/vcap/app/.java-buildpack/cx-iast-agent/cx-launcher.jar')     
 
       end
     end
