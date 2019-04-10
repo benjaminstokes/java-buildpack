@@ -42,7 +42,7 @@ module JavaBuildpack
 
       def compile 
         @logger.debug("CxIast compile running - Downloading CxIAST Agent")
-        download_zip(false, 'http://iast30.cx.sekots.org:8380/iast/compilation/download/JAVA')
+        download_zip(3, 'http://iast30.cx.sekots.org:8380/iast/compilation/download/JAVA', false)
         @droplet.copy_resources
 
       end
