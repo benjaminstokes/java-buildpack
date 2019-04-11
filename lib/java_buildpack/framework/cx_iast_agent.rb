@@ -36,13 +36,15 @@ module JavaBuildpack
 
       def detect
         @logger.debug("CxIast detect running")
-        @droplet
+        @application.services.one_service? FILTER, 'uri'
 
       end
 
       def compile 
         @logger.debug("CxIast compile running - Downloading CxIAST Agent")
-        download_zip(3, 'http://iast30.cx.sekots.org:8380/iast/compilation/download/JAVA', false)
+        cxiast_agenturi = @application.services.find_service(FILTER, 'uri')['uri']
+        @logger.debug("CxIast agent uri: " + cxiast_agenturi)
+        download_zip(3, @application.services.find_service(FILTER, 'uri')['uri'], false)
         @droplet.copy_resources
 
       end
@@ -58,8 +60,14 @@ module JavaBuildpack
         @droplet.java_opts.add_preformatted_options("-Xverify:none")   
 
         @droplet.java_opts.add_javaagent(@droplet.sandbox + 'cx-launcher.jar')     
-
       end
+      
+      private
+      
+      FILTER = 'checkmarx-iast'
+
+      private_constant :FILTER
+
     end
   end
 end
