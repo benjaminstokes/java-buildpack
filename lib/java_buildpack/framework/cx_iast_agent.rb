@@ -42,7 +42,7 @@ module JavaBuildpack
 
       def compile 
         @logger.debug("CxIast compile running - Downloading CxIAST Agent")
-        cxiast_agenturi = @application.services.find_service(FILTER, 'iast_server')['iast_server']
+        cxiast_agenturi = @application.services.find_service(FILTER, 'iast_server')['credentials']['iast_server']
         @logger.debug("CxIast agent uri is: " + cxiast_agenturi)
         cxiast_agenturi = cxiast_agenturi + "/iast/compilation/download/JAVA"
         @logger.debug("CxIast agent uri: " + cxiast_agenturi)
