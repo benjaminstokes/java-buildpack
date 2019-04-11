@@ -36,15 +36,16 @@ module JavaBuildpack
 
       def detect
         @logger.debug("CxIast detect running")
-        @application.services.one_service? FILTER, 'uri'
+        @application.services.one_service? FILTER, 'iast_server'
 
       end
 
       def compile 
         @logger.debug("CxIast compile running - Downloading CxIAST Agent")
-        cxiast_agenturi = @application.services.find_service(FILTER, 'uri')['uri']
+        cxiast_agenturi = @application.services.find_service(FILTER, 'iast_server')['iast_server']
+        cxiast_agenturi = cxiast_agenturi + '/iast/compilation/download/JAVA'
         @logger.debug("CxIast agent uri: " + cxiast_agenturi)
-        download_zip(3, @application.services.find_service(FILTER, 'uri')['uri'], false)
+        download_zip(3, cxiast_agenturi, false)
         @droplet.copy_resources
 
       end
@@ -64,7 +65,7 @@ module JavaBuildpack
       
       private
       
-      FILTER = 'checkmarx-iast'
+      FILTER = /checkmarx/.freeze
 
       private_constant :FILTER
 
