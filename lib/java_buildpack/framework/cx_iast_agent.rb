@@ -46,7 +46,7 @@ module JavaBuildpack
         @logger.debug("CxIast agent uri is: " + cxiast_agenturi)
         cxiast_agenturi = cxiast_agenturi + "/iast/compilation/download/JAVA"
         @logger.debug("CxIast agent uri: " + cxiast_agenturi)
-        download_zip(3, cxiast_agenturi, false)
+        download_zip 
         @droplet.copy_resources
 
       end
