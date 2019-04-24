@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'java_buildpack/component/base_component'
+require 'java_buildpack/component/versioned_dependency_component'
 require 'java_buildpack/logging/logger_factory'
 require 'java_buildpack/framework'
 
@@ -24,7 +24,7 @@ module JavaBuildpack
   module Framework
   
     # Encapsulates the functionality for contributing AspectJ Runtime Weaving configuration an application.
-    class CxIastAgent < JavaBuildpack::Component::BaseComponent
+    class CxIastAgent < JavaBuildpack::Component::VersionedDependencyComponent
 
       # Creates an instance
       #
@@ -40,28 +40,28 @@ module JavaBuildpack
 
       end
 
-      def compile 
-        @logger.debug("CxIast compile running - Downloading CxIAST Agent")
-        cxiast_agenturi = @application.services.find_service(FILTER, 'iast_server')['credentials']['iast_server']
-        @logger.debug("CxIast agent uri is: " + cxiast_agenturi)
-        cxiast_agenturi = cxiast_agenturi + "/iast/compilation/download/JAVA"
-        @logger.debug("CxIast agent uri: " + cxiast_agenturi)
-        download_zip 
-        @droplet.copy_resources
+      def compile         
+        download_zip false
 
       end
 
       def release
         @logger.debug("CxIast release running - Configuring CxIAST Agent")
         @droplet.java_opts.add_system_property('cxAppTag', @application.details['application_name'])
-        #@droplet.java_opts.add_system_property('cxScanTag', application_name)
         @droplet.java_opts.add_system_property('cxTeam', 'CxServer')
-
         @droplet.java_opts.add_system_property('iast.home', '/home/vcap/app/.java-buildpack/cx_iast_agent')
-        
         @droplet.java_opts.add_preformatted_options("-Xverify:none")   
+        @droplet.java_opts.add_javaagent(@droplet.sandbox + 'cx-launcher.jar') 
+        
+        cxiast_agenturi = @application.services.find_service(FILTER, 'iast_server')['credentials']['iast_server']
+        @logger.debug("CxIast agent uri is: " + cxiast_agenturi)
+      end
 
-        @droplet.java_opts.add_javaagent(@droplet.sandbox + 'cx-launcher.jar')     
+      protected
+
+      def supports?
+        @logger.debug("CxIast supports running")
+        @application.services.one_service? FILTER, 'iast_server'
       end
       
       private
