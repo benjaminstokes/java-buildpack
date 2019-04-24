@@ -24,7 +24,6 @@ require 'java_buildpack/framework'
 module JavaBuildpack
   module Framework
   
-    # Encapsulates the functionality for contributing AspectJ Runtime Weaving configuration an application.
     class CxIastAgent < JavaBuildpack::Component::VersionedDependencyComponent
 
       # Creates an instance
@@ -38,12 +37,10 @@ module JavaBuildpack
       def detect
         @logger.debug("CxIast detect running")
         @application.services.one_service? FILTER, 'iast_server'
-
       end
 
       def compile         
         download_zip true
-
       end
 
       def release
@@ -54,10 +51,8 @@ module JavaBuildpack
         @droplet.java_opts.add_preformatted_options("-Xverify:none")   
         @droplet.java_opts.add_javaagent(@droplet.sandbox + 'cx-launcher.jar') 
 
-        #cxiast_agenturi = @application.services.find_service(FILTER, 'iast_server')['credentials']['iast_server']
         credentials = @application.services.find_service(FILTER, 'iast_server')['credentials']
-        cxiast_agenturi = credentials['iast_server']
-        @logger.debug("CxIast agent uri is: " + cxiast_agenturi)
+        @logger.debug("CxIast agent uri is: " + credentials['iast_server'])
 
         write_configuration credentials
       end
@@ -89,6 +84,7 @@ module JavaBuildpack
           end
         end
       end
+      
     end
   end
 end
