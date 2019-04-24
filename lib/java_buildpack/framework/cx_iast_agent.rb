@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'fileutils'
 require 'java_buildpack/component/versioned_dependency_component'
 require 'java_buildpack/logging/logger_factory'
 require 'java_buildpack/framework'
@@ -53,9 +54,14 @@ module JavaBuildpack
         @droplet.java_opts.add_preformatted_options("-Xverify:none")   
         @droplet.java_opts.add_javaagent(@droplet.sandbox + 'cx-launcher.jar') 
 
-        cxiast_agenturi = @application.services.find_service(FILTER, 'iast_server')['credentials']['iast_server']
+        #cxiast_agenturi = @application.services.find_service(FILTER, 'iast_server')['credentials']['iast_server']
+        credentials = @application.services.find_service(FILTER, 'iast_server')['credentials']
+        cxiast_agenturi = credentials['iast_server']
         @logger.debug("CxIast agent uri is: " + cxiast_agenturi)
 
+        write_configuration credentials
+
+       
         #f = File.open('/home/vcap/app/.java-buildpack/cx_iast_agent/cx_agent.override.properties', 'a')
         #f.write('cxIastServer='+  cxiast_agenturi)
         #f.close
@@ -75,6 +81,15 @@ module JavaBuildpack
 
       private_constant :FILTER
 
+      def iastprops
+        @droplet.sandbox + 'cx_agent.override.properties'
+      end
+
+      def write_configuration(credentials)
+        iastprops.open(File::APPEND | File::WRONLY) do |f|
+          f.write ("cxIastServer="+  credentials['iast_server'])
+        end
+      end
     end
   end
 end
