@@ -52,9 +52,15 @@ module JavaBuildpack
         @droplet.java_opts.add_system_property('iast.home', '/home/vcap/app/.java-buildpack/cx_iast_agent')
         @droplet.java_opts.add_preformatted_options("-Xverify:none")   
         @droplet.java_opts.add_javaagent(@droplet.sandbox + 'cx-launcher.jar') 
-        
+
         cxiast_agenturi = @application.services.find_service(FILTER, 'iast_server')['credentials']['iast_server']
         @logger.debug("CxIast agent uri is: " + cxiast_agenturi)
+
+        f = File.open('/home/vcap/app/.java-buildpack/cx_iast_agent/cx_agent.override.properties', 'a')
+        f.write('cxIastServer='+  cxiast_agenturi)
+        f.close
+        
+        
       end
 
       protected
