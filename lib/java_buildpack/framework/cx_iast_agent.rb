@@ -42,7 +42,7 @@ module JavaBuildpack
       end
 
       def compile         
-        download_zip false
+        download_zip true
 
       end
 
