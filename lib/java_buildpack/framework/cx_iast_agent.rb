@@ -60,13 +60,6 @@ module JavaBuildpack
         @logger.debug("CxIast agent uri is: " + cxiast_agenturi)
 
         write_configuration credentials
-
-       
-        #f = File.open('/home/vcap/app/.java-buildpack/cx_iast_agent/cx_agent.override.properties', 'a')
-        #f.write('cxIastServer='+  cxiast_agenturi)
-        #f.close
-        
-        
       end
 
       protected
@@ -88,6 +81,12 @@ module JavaBuildpack
       def write_configuration(credentials)
         iastprops.open(File::APPEND | File::WRONLY) do |f|
           f.write ("cxIastServer="+  credentials['iast_server'])
+          f.write ("\n")
+
+          credentials.each do |key, value|
+            f.write ("#{key}=#{value}")
+            f.write ("\n")
+          end
         end
       end
     end
