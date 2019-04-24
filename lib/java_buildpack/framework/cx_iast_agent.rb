@@ -60,7 +60,6 @@ module JavaBuildpack
       protected
 
       def supports?
-        @logger.debug("CxIast supports running")
         @application.services.one_service? FILTER, 'iast_server'
       end
       
