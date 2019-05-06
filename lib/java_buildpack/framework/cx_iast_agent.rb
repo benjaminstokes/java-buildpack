@@ -59,7 +59,7 @@ module JavaBuildpack
         @droplet.java_opts.add_system_property('cxTeam', 'CxServer')
         @droplet.java_opts.add_system_property('iast.home', '/home/vcap/app/.java-buildpack/cx_iast_agent')
         @droplet.java_opts.add_preformatted_options("-Xverify:none")   
-        @droplet.java_opts.add_javaagent(@droplet.sandbox + 'cx-launcher.jar') 
+        #@droplet.java_opts.add_javaagent(@droplet.sandbox + 'cx-launcher.jar') 
 
         credentials = @application.services.find_service(FILTER, 'iast_server')['credentials']
         @logger.debug("CxIast agent uri is: " + credentials['iast_server'])
