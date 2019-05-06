@@ -287,7 +287,12 @@ module JavaBuildpack
 
         # Beware known problems with timeouts: https://www.ruby-forum.com/topic/143840
         def http_options(rich_uri)
-          http_options = {verify_mode: OpenSSL::SSL::VERIFY_NONE}  # Temporary disabling to debug ssl for Checkmarx IAST agent download.
+          http_options = {}
+
+          # Temporary disabling ssl check for Checkmarx IAST agent to support self signed certificates. 
+          if uri.request_uri.include? "/iast/compilation/download/JAVA"
+            http_options = {verify_mode: OpenSSL::SSL::VERIFY_NONE}  
+          end
 
           if secure?(rich_uri)
             http_options[:use_ssl] = true
