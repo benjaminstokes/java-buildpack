@@ -39,10 +39,20 @@ module JavaBuildpack
         @application.services.one_service? FILTER, 'iast_server'
       end
 
-      def compile         
-        download_zip true
-      end
+      def compile
+        agent_url = credentials = @application.services.find_service(FILTER, 'iast_server')['credentials']['iast_server'] + "/iast/compilation/download/JAVA"
+        @uri = agent_url # overriding the @uri from to download the agent from the user's own CxIAST server
+        @logger.debug("Downloading agent from " + agent_url)
 
+        JavaBuildpack::Util::Cache::InternetAvailability.instance.available(
+          true, 'The Checkmarx IAST Agent download location is always accessible'
+        ) do
+          @logger.debug("Downloading agent w/ internet available")
+          download_zip
+          @logger.debug("Finished downloading agent w/ internet available")
+        end
+      end
+        
       def release
         @logger.debug("CxIast release running - Configuring CxIAST Agent")
         @droplet.java_opts.add_system_property('cxAppTag', @application.details['application_name'])
