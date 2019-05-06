@@ -64,7 +64,7 @@ module JavaBuildpack
         credentials = @application.services.find_service(FILTER, 'iast_server')['credentials']
         @logger.debug("CxIast agent uri is: " + credentials['iast_server'])
 
-        write_configuration credentials
+        #write_configuration credentials
       end
 
       protected
