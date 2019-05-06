@@ -24,7 +24,7 @@ require 'java_buildpack/framework'
 module JavaBuildpack
   module Framework
   
-    class CxIastAgent < JavaBuildpack::Component::VersionedDependencyComponent
+    class CxIastAgent < JavaBuildpack::Component::BaseComponent
 
       # Creates an instance
       #
@@ -48,7 +48,7 @@ module JavaBuildpack
           true, 'The Checkmarx IAST Agent download location is always accessible'
         ) do
           @logger.debug("Downloading agent w/ internet available")
-          download_zip
+          download_zip 3, agent_url, false
           @logger.debug("Finished downloading agent w/ internet available")
         end
       end
