@@ -41,7 +41,6 @@ module JavaBuildpack
 
       def compile
         agent_url = credentials = @application.services.find_service(FILTER, 'iast_server')['credentials']['iast_server'] + "/iast/compilation/download/JAVA"
-        @uri = agent_url # overriding the @uri from to download the agent from the user's own CxIAST server
         @logger.debug("Downloading agent from " + agent_url)
 
         JavaBuildpack::Util::Cache::InternetAvailability.instance.available(
