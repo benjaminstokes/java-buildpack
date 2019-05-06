@@ -290,10 +290,10 @@ module JavaBuildpack
           http_options = {}
           
           # Temporary disabling ssl check for Checkmarx IAST agent to support self signed certificates. 
-          if rich_uri.request_uri.include? "/iast/compilation/download/JAVA"
-            @logger.debug { 'Disabling ssl verification for Cx IAST agent download' }
-            http_options = {verify_mode: OpenSSL::SSL::VERIFY_NONE}  
-          end
+          #if rich_uri.request_uri.include? "/iast/compilation/download/JAVA"
+          #  @logger.debug { 'Disabling ssl verification for Cx IAST agent download' }
+          #  http_options = {verify_mode: OpenSSL::SSL::VERIFY_NONE}  
+          #end
 
           if secure?(rich_uri)
             http_options[:use_ssl] = true
